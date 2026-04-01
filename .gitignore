@@ -1,0 +1,44 @@
+# .gitignore — claude-skills
+# Base: general-purpose (no specific stack detected)
+# Security enhancements added by github:init
+# Review this file before committing any new file type to this project.
+
+# ── OS Artifacts ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor Artifacts ────────────────────────────────────────────────
+*.swp
+*~
+.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.user
+
+# ── Security & Secrets ──────────────────────────────────────────────
+# Environment and credential files — never commit live secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+config/secrets.*
+
+# API key and token files that commonly slip through
+*.token
+auth.json
+serviceAccountKey.json
+
+# ── Local Claude Code Overrides ─────────────────────────────────────
+# Personal settings should not be shared — only project-level config belongs here
+.claude/settings.local.json
+
+# ── Workspace & Eval Artifacts ──────────────────────────────────────
+# Skill evaluation workspaces can contain large generated files
+*-workspace/
