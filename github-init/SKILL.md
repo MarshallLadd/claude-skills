@@ -137,7 +137,7 @@ that already have meaningful content.
 
 <!-- Prerequisites, installation steps, and first-run instructions -->
 
-## Development
+## develop
 
 <!-- How to run locally, run tests, build, etc. -->
 <!-- See CLAUDE.md for branch and PR conventions. -->
@@ -211,17 +211,17 @@ gh repo create <confirmed-name> --<public|private> \
 
 ### Remote repositories
 
-After the initial push, create and push the `development` branch:
+After the initial push, create and push the `develop` branch:
 
 ```bash
-git checkout -b development
-git push -u origin development
+git checkout -b develop
+git push -u origin develop
 ```
 
-Set `development` as the default branch on GitHub (where PRs target):
+Set `develop` as the default branch on GitHub (where PRs target):
 
 ```bash
-gh repo edit --default-branch development
+gh repo edit --default-branch develop
 ```
 
 ### Local-only repositories
@@ -230,13 +230,13 @@ Create both protected branches locally so the structure exists even without
 a remote:
 
 ```bash
-git checkout -b development
+git checkout -b develop
 git checkout main
 ```
 
 Note to user: branch protections are enforced on GitHub. For local-only
 repos, the convention still applies — avoid committing directly to `main` or
-`development`.
+`develop`.
 
 ---
 
@@ -261,10 +261,10 @@ gh api repos/$OWNER/$NAME/branches/main/protection \
   --field 'required_pull_request_reviews[required_approving_review_count]=0'
 ```
 
-**`development`** — integration branch. PRs required, direct pushes blocked.
+**`develop`** — integration branch. PRs required, direct pushes blocked.
 
 ```bash
-gh api repos/$OWNER/$NAME/branches/development/protection \
+gh api repos/$OWNER/$NAME/branches/develop/protection \
   --method PUT \
   --field enforce_admins=false \
   --field required_status_checks=null \
@@ -277,7 +277,7 @@ Confirm protections applied:
 ```bash
 gh api repos/$OWNER/$NAME/branches/main/protection \
   --jq '.required_pull_request_reviews'
-gh api repos/$OWNER/$NAME/branches/development/protection \
+gh api repos/$OWNER/$NAME/branches/develop/protection \
   --jq '.required_pull_request_reviews'
 ```
 
@@ -287,7 +287,7 @@ gh api repos/$OWNER/$NAME/branches/development/protection \
 
 If the working directory contains files beyond the scaffolding (source code,
 config, assets, etc.), collect them into a single catch-up commit and open
-a PR targeting `development`:
+a PR targeting `develop`:
 
 ```bash
 git checkout -b feat/initial-codebase
@@ -298,7 +298,7 @@ Bulk commit of pre-existing project files.
 All subsequent changes will follow the branch → PR → merge workflow."
 git push -u origin feat/initial-codebase
 gh pr create \
-  --base development \
+  --base develop \
   --title "feat: initial codebase" \
   --body "Bulk import of existing project files.
 
@@ -320,11 +320,11 @@ Run through this before declaring init complete:
 - [ ] `README.md` exists with project scaffold
 - [ ] `CLAUDE.md` exists
 - [ ] Initial commit contains only scaffolding (no source code)
-- [ ] `main` and `development` branches exist
+- [ ] `main` and `develop` branches exist
 - [ ] *(remote)* Remote `origin` is set and reachable
-- [ ] *(remote)* `development` is the default branch on GitHub
-- [ ] *(remote)* Branch protections active on `main` and `development`
-- [ ] *(if code existed)* Catch-up commit made; PR opened to `development`
+- [ ] *(remote)* `develop` is the default branch on GitHub
+- [ ] *(remote)* Branch protections active on `main` and `develop`
+- [ ] *(if code existed)* Catch-up commit made; PR opened to `develop`
 
 Report the GitHub repo URL (if remote) or the local `.git` path (if
 local-only) to the user when done.
