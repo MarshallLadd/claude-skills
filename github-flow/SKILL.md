@@ -12,8 +12,8 @@ description: >
 # GitHub Flow — Branch & PR Conventions
 
 This skill defines how work moves through the repository after initialization.
-All work happens in short-lived branches that merge into `development`.
-`development` merges into `main` only for releases.
+All work happens in short-lived branches that merge into `develop`.
+`develop` merges into `main` only for releases.
 
 ---
 
@@ -21,13 +21,13 @@ All work happens in short-lived branches that merge into `development`.
 
 ```
 main              ← production / releases only
-  └── development ← integration branch; always in a releasable state
-        ├── feat/add-user-login       ← your work lives here
-        ├── fix/null-on-logout
+  └── develop ← integration branch; always in a releasable state
+        ├── feature/add-user-login    ← your work lives here
+        ├── bugfix/null-on-logout
         └── chore/update-dependencies
 ```
 
-**Never commit directly to `main` or `development`.** Both branches are
+**Never commit directly to `main` or `develop`.** Both branches are
 protected — all changes arrive via pull request.
 
 ---
@@ -41,17 +41,17 @@ at a glance in a branch list.
 
 | Type | When to use |
 |------|-------------|
-| `feat/` | New feature or user-facing capability |
-| `fix/` | Bug fix |
+| `feature/` | New feature or user-facing capability |
+| `bugfix/` | Bug fix |
 | `chore/` | Maintenance, dependency updates, tooling |
 | `docs/` | Documentation changes only |
 | `refactor/` | Code restructure with no behavior change |
 | `hotfix/` | Urgent production fix (see Hotfixes below) |
 
 **Examples:**
-- `feat/add-user-authentication`
-- `fix/login-null-pointer`
-- `chore/upgrade-typescript-5`
+- `feature/add-user-authentication`
+- `bugfix/login-null-pointer`
+- `chore/upgrade-kotlin-2`
 - `docs/update-api-reference`
 - `refactor/extract-auth-middleware`
 
@@ -59,18 +59,18 @@ at a glance in a branch list.
 
 ## Starting New Work
 
-Always branch from `development` to pick up the latest integrated changes:
+Always branch from `develop` to pick up the latest integrated changes:
 
 ```bash
-git checkout development
-git pull origin development
-git checkout -b feat/your-feature-name
+git checkout develop
+git pull origin develop
+git checkout -b feature/your-feature-name
 ```
 
 Push early to create a remote backup and make work visible to collaborators:
 
 ```bash
-git push -u origin feat/your-feature-name
+git push -u origin feature/your-feature-name
 ```
 
 ---
@@ -106,11 +106,11 @@ Keep the subject line under 72 characters. The body can be as long as needed.
 
 ## Opening a Pull Request
 
-When a branch is ready for review, open a PR targeting `development`:
+When a branch is ready for review, open a PR targeting `develop`:
 
 ```bash
 gh pr create \
-  --base development \
+  --base develop \
   --title "feat: short description" \
   --body "## What this does
 
@@ -125,7 +125,7 @@ gh pr create \
 <!-- Anything reviewers should pay attention to, edge cases, trade-offs -->"
 ```
 
-Always target `development`, never `main` — except for releases and hotfixes.
+Always target `develop`, never `main` — except for releases and hotfixes.
 
 ---
 
@@ -139,20 +139,20 @@ gh pr merge <pr-number> --squash --delete-branch
 ```
 
 Use squash for feature and fix branches. Use a regular merge commit for
-release PRs (development → main) to preserve the full release history.
+release PRs (develop → main) to preserve the full release history.
 
 ---
 
-## Releases — Promoting development to main
+## Releases — Promoting develop to main
 
-A release is a deliberate, intentional promotion of `development` into `main`.
-Only do this when `development` is stable and the team agrees it is ready
+A release is a deliberate, intentional promotion of `develop` into `main`.
+Only do this when `develop` is stable and the team agrees it is ready
 to ship.
 
 ```bash
-# Make sure development is up to date locally
-git checkout development
-git pull origin development
+# Make sure develop is up to date locally
+git checkout develop
+git pull origin develop
 
 # Open the release PR
 gh pr create \
@@ -167,7 +167,7 @@ gh pr create \
 <!-- Bullet list of significant changes since last release -->
 
 ### Checklist
-- [ ] All tests passing on development
+- [ ] All tests passing on develop
 - [ ] No open critical bugs
 - [ ] Version number bumped
 - [ ] CHANGELOG updated (if maintained)"
@@ -186,16 +186,16 @@ git push origin v<version>
 
 ## Hotfixes
 
-For urgent production bugs that cannot wait for the normal development cycle:
+For urgent production bugs that cannot wait for the normal develop cycle:
 
 ```bash
-# Branch from main — not development — to avoid pulling in unfinished work
+# Branch from main — not develop — to avoid pulling in unfinished work
 git checkout main
 git pull origin main
 git checkout -b hotfix/describe-the-critical-issue
 ```
 
-After fixing and committing, open PRs into **both** `main` and `development`
+After fixing and committing, open PRs into **both** `main` and `develop`
 so the fix is not lost when the next release happens:
 
 ```bash
@@ -207,13 +207,13 @@ gh pr create --base main \
 **Fix:** <!-- What was changed? -->
 **Testing:** <!-- How was this verified? -->"
 
-gh pr create --base development \
+gh pr create --base develop \
   --title "hotfix: (backport) brief description" \
   --body "Backport of hotfix for <issue>. See main PR for details."
 ```
 
 Merge the `main` PR first, tag the release, then merge the backport into
-`development`.
+`develop`.
 
 ---
 
@@ -221,8 +221,8 @@ Merge the `main` PR first, tag the release, then merge the backport into
 
 | Situation | Action |
 |-----------|--------|
-| Starting any new work | Branch from `development` |
-| Work is ready | PR → `development` |
-| Shipping a release | PR from `development` → `main`, then tag |
-| Urgent production fix | Branch from `main`, PR → `main` + `development` |
-| Never | Commit directly to `main` or `development` |
+| Starting any new work | Branch from `develop` using `feature/`, `bugfix/`, etc. |
+| Work is ready | PR → `develop` |
+| Shipping a release | PR from `develop` → `main`, then tag |
+| Urgent production fix | Branch from `main`, PR → `main` + `develop` |
+| Never | Commit directly to `main` or `develop` |
